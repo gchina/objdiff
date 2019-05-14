@@ -4,13 +4,13 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+PyInstaller = "*"
 pytest = "*"
 
 [packages]
 click = "*"
 deepdiff = "*"
 PyYAML = "*"
-PyInstaller = "*"
 
 [requires]
 python_version = "3.7"

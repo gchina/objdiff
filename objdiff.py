@@ -136,7 +136,7 @@ def dictdiff(dict1: dict, dict2: dict, color=True) -> int:
 @click.version_option(version=__version__)
 @click.argument("file1", type=click.File("r"))
 @click.argument("file2", type=click.File("r"))
-@click.option("--color/--no-color", is_flag=True, default=True)
+@click.option("--color/--no-color", is_flag=True, default=True, help="Enable/disable color output (default: enabled)")
 def objdiff(file1: click.File, file2: click.File, color: bool) -> int:
     """Diff two files containing either JSON or YAML objects."""
     try:
