@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import io
-import pprint
 import sys
 import tokenize
 
@@ -20,6 +19,7 @@ class DiffHandler:
         self.current_level = []
 
     def handle_level(self, new_level):
+        """Print out the correct whitespace for the indentation level."""
         indent_level = 0
         for indent_level, level in enumerate(new_level):
             if (indent_level + 1) > len(
@@ -78,7 +78,7 @@ class DiffHandler:
         self.current_level = path
 
     def handle_diff(self, diff):
-        # print(diff)
+        """Command handler pattern"""
         command = diff[0]
         try:
             func = getattr(self, f"handle_{command}")
@@ -93,7 +93,6 @@ def get_path(item: str) -> list:
         if i.type == tokenize.STRING:
             path.append(i.string.replace("'", ""))
         elif i.type == tokenize.NUMBER:
-            # path.append(int(i.string))
             path[-1] = f"{path[-1]}[{i.string}]"
 
     return path
@@ -114,16 +113,12 @@ def normalize_diffs(diffs: dict) -> dict:
 
 
 def dictdiff(dict1: dict, dict2: dict, color=True) -> int:
-    # print(yaml.dump(dict1))
-    # print(yaml.dump(dict2))
     diffs = deepdiff.DeepDiff(dict1, dict2, verbose_level=2)
     if not len(diffs):
         click.echo("No differences")
         return 0
 
-    # pprint.pprint(diffs)
     diffs = normalize_diffs(diffs)
-    # pprint.pprint(diffs)
 
     handler = DiffHandler(color)
     for diff in diffs:
