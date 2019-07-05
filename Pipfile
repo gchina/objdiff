@@ -6,6 +6,9 @@ verify_ssl = true
 [dev-packages]
 PyInstaller = "*"
 pytest = "*"
+pytest-black = "*"
+pytest-cov = "*"
+pytest-flake8 = "*"
 
 [packages]
 click = "*"

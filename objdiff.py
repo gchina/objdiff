@@ -73,18 +73,19 @@ class DiffHandler:
             return
 
         idx = self.handle_level(path[:-1])
-        click.secho(f"-{'  ' * idx}{path[-1]}: {diff[2]['old_value']}", fg=self.remove_color)
-        click.secho(f"+{'  ' * idx}{path[-1]}: {diff[2]['new_value']}", fg=self.add_color)
+        click.secho(
+            f"-{'  ' * idx}{path[-1]}: {diff[2]['old_value']}", fg=self.remove_color
+        )
+        click.secho(
+            f"+{'  ' * idx}{path[-1]}: {diff[2]['new_value']}", fg=self.add_color
+        )
         self.current_level = path
 
     def handle_diff(self, diff):
         """Command handler pattern"""
         command = diff[0]
-        try:
-            func = getattr(self, f"handle_{command}")
-            return func(diff)
-        except AttributeError:
-            pass
+        func = getattr(self, f"handle_{command}")
+        return func(diff)
 
 
 def get_path(item: str) -> list:
@@ -131,8 +132,15 @@ def dictdiff(dict1: dict, dict2: dict, color=True) -> int:
 @click.version_option(version=__version__)
 @click.argument("file1", type=click.File("r"))
 @click.argument("file2", type=click.File("r"))
-@click.option("--color/--no-color", is_flag=True, default=True, help="Enable/disable color output (default: enabled)")
-def objdiff(file1: click.File, file2: click.File, color: bool) -> int:
+@click.option(
+    "--color/--no-color",
+    is_flag=True,
+    default=True,
+    help="Enable/disable color output (default: enabled)",
+)
+def objdiff(
+    file1: click.File, file2: click.File, color: bool
+) -> int:  # pragma: no cover
     """Diff two files containing either JSON or YAML objects."""
     try:
         dict1 = yaml.load(file1, Loader=yaml.Loader)
@@ -148,5 +156,5 @@ def objdiff(file1: click.File, file2: click.File, color: bool) -> int:
     return dictdiff(dict1, dict2, color)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     sys.exit(objdiff())
